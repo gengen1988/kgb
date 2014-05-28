@@ -1,0 +1,12 @@
+{% extends "snippet/base.html" %}
+{% block body %}
+  {% include "snippet/header.html" %}
+
+  <ul data-bind="foreach: items">
+    <li>
+      <span data-bind="text: title"></span>
+      <a data-bind="attr: {href: 'manage#' + id()}">manage me</a>
+    </li>
+  </ul>
+
+{% endblock %}
