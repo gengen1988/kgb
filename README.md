@@ -24,6 +24,14 @@ grunt-cli 安装方法：
 npm install -g grunt-cli
 ```
 
+实际开发中会使用 bower 管理第三方依赖。开发之前请务必安装好
+
+bower 安装方法：
+```
+npm install -g bower
+```
+
+
 确保环境无误后即可初始化 kgb 工具：
 ```
 git clone https://github.com/gengen1988/kgb.git
