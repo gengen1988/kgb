@@ -6,6 +6,7 @@ var mkdirp = require('mkdirp');
 
 var TEMPLATE_DIR = 'view';
 var OUTPUT_DIR = 'www';
+var DEPLOY_DIR = '../WebContent';
 
 var writeFileP = function (file, data, callback) {
   mkdirp(path.dirname(file), function (err) {
@@ -37,6 +38,12 @@ module.exports = function (grunt) {
         cwd: TEMPLATE_DIR,
         src: ['**', '!**/*.html'],
         dest: OUTPUT_DIR + '/'
+      },
+      deploy: {
+        expand: true,
+        cwd: OUTPUT_DIR,
+        src: ['**'],
+        dest: DEPLOY_DIR + '/'
       }
     },
     watch: {
@@ -96,5 +103,7 @@ module.exports = function (grunt) {
     });
   });
 
-  grunt.registerTask('build', ['clean', 'render', 'copy']);
+  grunt.registerTask('build', ['clean', 'render', 'copy:dev']);
+
+  grunt.registerTask('deploy', ['build', 'copy:deploy']);
 };
