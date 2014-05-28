@@ -9,16 +9,15 @@
   {% block body %}
   {% endblock %}
 
-  <script src="/bower_components/requirejs/require.js"></script>
+  <script src="{{root}}bower_components/requirejs/require.js"></script>
   <script>
   requirejs.config({
-    baseUrl: '/js',
     paths: {
-      'jquery': '/bower_components/jquery/dist/jquery.min',
-      'knockout': '/bower_components/knockoutjs/dist/knockout'
+      'jquery': '{{root}}bower_components/jquery/dist/jquery.min',
+      'knockout': '{{root}}bower_components/knockoutjs/dist/knockout'
     }
   });
-  require(['{{path}}/app']);
+  require(['app']);
   </script>
 </body>
 </html>

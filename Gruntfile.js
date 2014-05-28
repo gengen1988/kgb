@@ -28,6 +28,15 @@ module.exports = function (grunt) {
         }
       }
     },
+    clean: {
+      dev: ['www/**/*', 'www/bower_components/**']
+    },
+    copy: {
+      expand: true,
+      cwd: TEMPLATE_DIR,
+      src: ['**', '!**/*.html'],
+      dest: OUTPUT_DIR + '/'
+    },
     watch: {
       snippets: {
         files: 'snippet/**',
@@ -36,6 +45,10 @@ module.exports = function (grunt) {
       views: {
         files: 'view/**',
         tasks: ['render']
+      },
+      misc: {
+        files: ['view/**', '!view/**/*.html'],
+        tasks: ['copy:dev']
       },
       html: {
         files: 'www/**',
@@ -49,6 +62,7 @@ module.exports = function (grunt) {
 
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-contrib-watch');
+  grunt.loadNpmTasks('grunt-contrib-clean');
 
   grunt.registerTask('default', ['render', 'connect', 'watch']);
 
@@ -62,16 +76,18 @@ module.exports = function (grunt) {
       }
       
       var filename = root + path.sep + fileStats.name;
-      var rel = path.relative(TEMPLATE_DIR, filename);
-      var output = OUTPUT_DIR + path.sep + rel;
-      var relDir = path.dirname(rel);
-
+      var output = OUTPUT_DIR + path.sep + path.relative(TEMPLATE_DIR, filename);
+      var rootRel = path.relative(TEMPLATE_DIR, filename);
+      if (rootRel == '') {
+        rootRel += '/';
+      }
 
       grunt.log.writeln('rendering: ' + filename);
 
       var result = nunjucks.render(filename, {
-        path: relDir
+        root: rootRel
       });
+
       writeFileP(output, result, function () {
         next();
       });
