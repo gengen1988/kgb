@@ -11,26 +11,14 @@ kgb 是一套网站前端开发工具集，通过使用这个工具，您可以�
 参考：
 - nunjucks 模板：http://mozilla.github.io/nunjucks/
 - require.js 异步模块加载：http://requirejs.org/
+- bower 包管理器：http://bower.io/
 
 
 # 安装
 
-kgb 开发工具依赖 grunt 进行构建工作，在使用之前确保已经有可用的 node.js 运行环境，并已经安装好 grunt-cli。
+kgb 开发工具依赖 node.js 运行环境，在使用之前确保已经有可用的 node.js 运行环境。
 
 node.js 下载地址：http://nodejs.org
-
-grunt-cli 安装方法：
-```
-npm install -g grunt-cli
-```
-
-实际开发中会使用 bower 管理第三方依赖。开发之前请务必安装好
-
-bower 安装方法：
-```
-npm install -g bower
-```
-
 
 确保环境无误后即可初始化 kgb 工具：
 ```
