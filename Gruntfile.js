@@ -29,13 +29,15 @@ module.exports = function (grunt) {
       }
     },
     clean: {
-      dev: ['www/**/*', 'www/bower_components/**']
+      dev: ['www/**/*', '!www/bower_components/**']
     },
     copy: {
-      expand: true,
-      cwd: TEMPLATE_DIR,
-      src: ['**', '!**/*.html'],
-      dest: OUTPUT_DIR + '/'
+      dev: {
+        expand: true,
+        cwd: TEMPLATE_DIR,
+        src: ['**', '!**/*.html'],
+        dest: OUTPUT_DIR + '/'
+      }
     },
     watch: {
       snippets: {
@@ -43,7 +45,7 @@ module.exports = function (grunt) {
         tasks: ['render']
       },
       views: {
-        files: 'view/**',
+        files: 'view/**/*.html',
         tasks: ['render']
       },
       misc: {
@@ -63,22 +65,19 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-contrib-connect');
   grunt.loadNpmTasks('grunt-contrib-watch');
   grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-contrib-copy');
 
-  grunt.registerTask('default', ['render', 'connect', 'watch']);
+  grunt.registerTask('default', ['build', 'connect', 'watch']);
 
   grunt.registerTask('render', function () {
     var done = this.async();
     var walker = walk.walk(TEMPLATE_DIR);
     walker.on('file', function (root, fileStats, next) {
-      if (fileStats.name !== 'index.html') {
-        next();
-        return;
-      }
       
       var filename = root + path.sep + fileStats.name;
       var output = OUTPUT_DIR + path.sep + path.relative(TEMPLATE_DIR, filename);
-      var rootRel = path.relative(TEMPLATE_DIR, filename);
-      if (rootRel == '') {
+      var rootRel = path.relative(root, TEMPLATE_DIR);
+      if (rootRel !== '') {
         rootRel += '/';
       }
 
@@ -97,5 +96,5 @@ module.exports = function (grunt) {
     });
   });
 
-  grunt.registerTask('build', ['render']);
+  grunt.registerTask('build', ['clean', 'render', 'copy']);
 };
